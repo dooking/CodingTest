@@ -131,63 +131,13 @@ sys.stdout = open('output.txt','w')
 #                 e = 1
 
 #     return e
-
 def solution(food_times, k):
-    food_list = []
-    # Index 장착
-    for i,j in enumerate(food_times):
-        food_list.append([i+1,j])
-    
-    cnt = 0
     lenFood = len(food_times)
-    # food_list 하나씩에 대해서 a가 k보다 작은지 비교. 작다면 0으로 만들어버림(cnt도 1증가)
-    aBool = False
-    for i in range(len(food_list)):
-        a = lenFood*(food_list[i][1]) +food_list[i][0]
-        j=1
-        while a<=k: 
-            a = lenFood*(food_list[i][1]+j) +food_list[i][0]
-            cnt += 1
-            j += 1
-            aBool = True
-        if(aBool):
-            aBool = False
-            food_list[i][0] = 0
-            food_list[i][1] = 0
-            food_list[i].append(0)
-        else:
-            food_list[i].append(a)
+    while k>= lenFood:
+        rotate = k//lenFood
+        if(min(food_times) <= rotate):
+            
 
-    # food_list가 다 0이면 return
-    print(food_list)
-    if(sum(food_times) <= k):
-        return -1
-    #start 위치 지정
-    start = (k-1)%lenFood
-    time = 0
-    kEnergy = True
-    #여기 로직이 이상한거같아
-    #T -> F , T -> T, F -> F, F-> T 이렇게 나눠야하나ㅠㅠ
-    while True:
-        print("time :",time,cnt,kEnergy,start,k)
-        if(time == cnt+1 and kEnergy):
-            break
-        if(food_list[start][0] == 0):
-            if(kEnergy):
-                time += 1
-        elif(food_list[start][2] == k):
-            food_list[start][0] = 0
-        elif(food_list[start][0] != 0):
-            time += 1
-        start += 1
-        k += 1
-        if(start == len(food_list)):
-            start = 0
-        if(food_list[start][2] == k or food_list[start][0] == 0):
-            kEnergy = False   
-            print(">>time :",time,cnt,kEnergy,start)
-        else:
-            kEnergy = True
-            print(">>time :",time,cnt,kEnergy,start)
-    return food_list[start][0]
+
+
 print(solution([1,10,10],7))
