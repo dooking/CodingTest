@@ -1,6 +1,5 @@
 from itertools import product
 import sys
-from itertools import product
 def solution(relation):
     answer = 0
     #relationT =[list(x) for x in zip(*relation)]
