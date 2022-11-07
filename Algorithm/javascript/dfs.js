@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { deflateSync } = require("zlib");
 let input = fs.readFileSync("./input.txt").toString().split("\n");
 let [N, M, K] = input
   .shift()

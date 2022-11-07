@@ -49,16 +49,13 @@ const permutation = (arr, n) => {
 const permutationWithRepetition = (arr, n) => {
   const result = [];
   const dfs = (path) => {
-    console.log("path", path);
     if (path.length === n) {
       result.push(path.slice());
       return;
     }
     arr.forEach((v) => {
       path.push(v);
-      console.log("합체", path);
       dfs(path);
-      console.log("합체 끝", path);
       path.pop();
     });
   };
