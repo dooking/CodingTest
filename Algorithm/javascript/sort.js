@@ -110,4 +110,5 @@ function heapify(arr, i, len) {
 // selectSort(arr);
 // insertSort(arr);
 // console.log(quickSort(arr));
-console.log(mergeSort(arr));
+// console.log(mergeSort(arr));
+console.log(heapSort(arr));
