@@ -20,9 +20,10 @@ function selectSort(arr) {
         minIndex = j;
       }
     }
-    [arr[minIndex], arr[i]] = [arr[i], arr[minIndex]];
+    if (minIndex !== i) {
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+    }
   }
-  console.log(arr);
   return arr;
 }
 
