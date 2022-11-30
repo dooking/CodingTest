@@ -62,3 +62,5 @@ const permutationWithRepetition = (arr, n) => {
   dfs([]);
   return result;
 };
+
+console.log(combinationWithRepetition([0, 1, 2, 3, 4], 3));
