@@ -1,40 +1,41 @@
-from sys import stdin
-from _collections import deque
+def solution(s, times):
+    answer = [1,1]
+    #[year, month, day, hour, minutes, second]
+    start = list(map(int, s.split(":")))
+    end = list(map(int, s.split(":")))
 
-_input = stdin.readline
-n, m = map(int, _input().split())
-paper = [list(map(int, _input().split())) for _ in range(n)]
+    for t in times:
+        splited_t = list(map(int,t.split(":")))
+        save_date = saving_date_calculator(end, splited_t)
 
-ans = -10000000
-queue = deque([])
-check = []
-dir = [(1, -1, 0, 0), (0, 0, 1, -1)]
+        if is_over_a_day(end, save_date):
+            answer[0] = 0
+        end = save_date
 
+    answer[1] = day_calculator(start, end)
 
-def dfs(i, j, val, arr, num):
-    ans = -100
-    if num == 4:
-        return val
-    if num == 2:
-        special = []
-    for d in range(4):
-        ni = i + dir[0][d]
-        nj = j + dir[1][d]
-        if -1 < ni < n and -1 < nj < m and not ((ni, nj) in arr):
-            if num == 2:
-                special.append(paper[ni][nj])
-            tmp_list = arr + [(ni, nj)]
-            if num == 2 and len(special) > 1:
-                special.sort()
-                ans = max(ans, val + special[-1] + special[-2])
-            ans = max(ans, dfs(ni, nj, val + paper[ni][nj], tmp_list, num + 1))
-            check.append(tmp_list)
-    return ans
+    return answer
 
-for i in range(n):
-    for j in range(m):
-        res = dfs(i, j, paper[i][j], [(i, j)], 1)
-        if ans < res:
-            ans = res
+def saving_date_calculator(before_save, save_date):
+    minutes, second = my_divmod(0, before_save[5], save_date[3], 60)
+    hour, minutes = my_divmod(minutes, before_save[4], save_date[2], 60)
+    day, hour = my_divmod(hour, before_save[3], save_date[1], 24)
+    month, day = my_divmod(day, before_save[2], save_date[0], 30)
+    year, month = my_divmod(month, before_save[1], 0, 12)
+    year += before_save[0]
+    return [year, month, day, hour, minutes, second]
+    
+def my_divmod(target, before, after, num):
+    a, b = divmod(target + before + after, num)
+    return [a,b]
 
-print(ans)
+def is_over_a_day(before_save, save_date):
+    return True if save_date[2] - before_save[2] > 1 else False
+
+def day_calculator(start,end):
+    year = end[0] - start[0]
+    month = end[1] - start[1]
+    day = end[2] - start[2]
+    return 360*year + 30*month + day + 1
+
+print(solution("2020:12:30:23:59:0", []))
