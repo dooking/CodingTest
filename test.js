@@ -1,12 +1,7 @@
-let result = [];
+const map = new Map();
 
-function solution(str) {
-  console.log(str);
-  if (!str) {
-    return result.join(" ");
-  }
-  result.push(str);
-  return solution;
-}
+map.set("test", 1);
+map.set("test2", 3);
+map.set("test3", 5);
 
-console.log(solution("hello")("world")("hihi")("bye")());
+console.log("a".padEnd(5, "ABC"));
