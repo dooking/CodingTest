@@ -16,4 +16,4 @@ function solution(n, times) {
   return left;
 }
 
-console.log(solution(6, [7, 10]));
+console.log(solution(6, [1, 1, 1, 1, 1]));

@@ -4,6 +4,7 @@ const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 let input = fs.readFileSync(filePath).toString().split("\n");
 let coord = [];
 const [N, C] = input[0].split(" ").map((el) => +el);
+
 for (let i = 1; i < input.length; i++) {
   coord.push(+input[i]);
 }
@@ -25,7 +26,7 @@ function solution() {
   let end = coord[coord.length - 1];
   while (start <= end) {
     let mid = Math.floor((start + end) / 2);
-
+    console.log(start, end, mid, count(coord, mid));
     if (count(coord, mid) >= C) {
       start = mid + 1;
       answer = mid;
