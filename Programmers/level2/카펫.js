@@ -1,13 +1,17 @@
 function solution(brown, yellow) {
   var answer = [];
-  const yelloArr = [];
-  for (let i = yellow; i > 0; i--) {
-    if (yellow % i == 0) {
-      yelloArr.push([yellow, i]);
-      console.log(i);
+  const cases = [];
+  for (let i = yellow; i >= Math.sqrt(yellow); i--) {
+    if (yellow % i === 0) {
+      cases.push([i, yellow / i]);
     }
   }
-  console.log(yelloArr);
+  for (let [a, b] of cases) {
+    if (a * 2 + b * 2 + 4 === brown) {
+      answer = [a + 2, b + 2];
+      break;
+    }
+  }
   return answer;
 }
 
