@@ -1,75 +1,67 @@
+// https://www.acmicpc.net/problem/5052
+const fs = require("fs");
+const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+let input = fs.readFileSync(filePath).toString().split("\n");
+const N = +input[0];
+const testCase = Array.from({ length: N }, () => []);
+let cnt = 0;
+for (let i = 1; i < input.length; i++) {
+  let idx = +input[i];
+  for (let j = 0; j < idx; j++) {
+    testCase[cnt].push(input[i + j + 1]);
+  }
+  cnt++;
+  i += +input[i];
+}
+
 class Node {
-  constructor(value = "") {
-    this.value = value;
+  constructor(word = "", count = 0) {
+    this.word = word;
+    this.count = count;
     this.children = new Map();
   }
 }
-
 class Trie {
   constructor() {
-    this.root = new Node(); // 루트 노드는 공백
+    this.root = new Node();
   }
-
-  insert(word) {
-    let currentNode = this.root;
-
-    // word = cat;
-    for (const char of word) {
-      if (!currentNode.children.has(char)) {
-        currentNode.children.set(char, new Node(currentNode.value + char));
+  insert(string) {
+    let cur = this.root;
+    for (let _s of String(string)) {
+      if (!cur.children.has(_s)) {
+        cur.children.set(_s, new Node(cur.word + _s, 0));
       }
-
-      currentNode = currentNode.children.get(char);
+      const child = cur.children.get(_s);
+      child.count++;
+      cur = cur.children.get(_s);
     }
   }
-
-  has(word) {
-    let currentNode = this.root;
-
-    for (const char of word) {
-      console.log(char, currentNode.children.has(char));
-      if (!currentNode.children.has(char)) {
-        return false;
-      }
-      currentNode = currentNode.children.get(char);
+  find(string) {
+    let cur = this.root;
+    for (let _s of String(string)) {
+      cur = cur.children.get(_s);
     }
-    return true;
+    if (cur.children.size) {
+      return true;
+    }
+    return false;
   }
 }
-
-const fs = require("fs");
-let input = fs
-  .readFileSync("./input.txt")
-  .toString()
-  .replaceAll("\r", "")
-  .split("\n");
-
-const testCase = input[0];
-const caseList = [];
-const answer = [];
-console.log(input.length);
-for (let i = 1; i < input.length; i++) {
-  const num = input[i];
-  caseList.push([num, [...input.slice(i + 1, i + +num + 1)]]);
-  i += +num;
-}
-for (let i = 0; i < testCase.length; i++) {
-  for (let [n, numbers] of caseList) {
+function solution(cases) {
+  const answer = [];
+  for (let numList of cases) {
     const trie = new Trie();
     let bool = true;
-    for (let number of numbers) {
-      console.log(number, trie.has(number));
-      if (!trie.has(number)) {
-        trie.insert(number);
-      } else {
-        answer.push("YES");
+    for (let num of numList) {
+      trie.insert(num);
+    }
+    for (let num of numList) {
+      if (trie.find(num)) {
         bool = false;
-        break;
       }
     }
-    if (bool) {
-      answer.push("NO");
-    }
+    answer.push(bool ? "YES" : "NO");
   }
+  return answer;
 }
-console.log(answer);
+console.log(solution(testCase).join("\n"));
