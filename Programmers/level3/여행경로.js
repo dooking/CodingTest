@@ -1,69 +1,66 @@
 function solution(tickets) {
-  var answer = [];
-  const countries = {};
-  for (let i = 0; i < tickets.length; i++) {
-    const [from, to] = tickets[i];
-    countries[from] = countries[from] ? [...countries[from], to] : [to];
-  }
-  for (let keys of Object.keys(countries)) {
-    countries[keys].sort().reverse();
-  }
-  const start = "ICN";
-  const queue = [start];
-  const visited = [];
-  while (queue.length) {
-    const cur = queue.pop();
-    const near = countries[cur];
-    console.log("near:", cur, near);
-    console.log(visited);
-    if (near) {
-      answer.push(cur);
-      for (let i = 0; i < near.length; i++) {
-        console.log(
-          "중요::",
-          !check([cur, near[i]], visited),
-          !countries[near[i]]
-        );
-        if (!check([cur, near[i]], visited) && countries[near[i]]) {
-          console.log(">>", near[i]);
-          queue.push(near[i]);
-          visited.push([cur, near[i]]);
+  // graph
+  const graph = tickets.reduce((acc, [from, to], i) => {
+    if (!acc[from]) acc[from] = [to];
+    else acc[from] = [...acc[from], to].sort().map((f, i) => `${f}${i}`);
+    return acc;
+  }, {});
+
+  // dfs
+  let used = [];
+  let path = ["ICN"];
+  console.log(graph);
+  const dfs = (from) => {
+    if (graph[from]) {
+      const pCache = [...path];
+      const uCache = [...used];
+
+      for (let i = 0; i < graph[from].length; i++) {
+        const to = graph[from][i];
+
+        // 아직 사용 안했다면
+        if (!used.find(([vf, vt]) => vf === from && vt === to)) {
+          const realTo = to.replace(/[0-9]/g, "");
+
+          // 사용 처리
+          path.push(realTo);
+          used.push([from, to]);
+
+          // 만약 다 못돌았다면 원복
+          if (!dfs(realTo)) {
+            path = pCache;
+            used = uCache;
+          }
         }
       }
     }
-  }
-  return answer;
+
+    return tickets.length === used.length;
+  };
+
+  dfs("ICN");
+
+  return path;
 }
 
-function check(target, arr) {
-  for (let i = 0; i < arr.length; i++) {
-    const [from, to] = arr[i];
-    if (from === target[0] && to === target[1]) {
-      return true;
-    }
-  }
-  return false;
-}
 // console.log(
 //   solution([
 //     ["ICN", "JFK"],
-//     ["IAD", "ICN"],
 //     ["HND", "IAD"],
 //     ["JFK", "HND"],
-//     ["ICN", "ZZZ"],
-//   ])
-// );
-// console.log(
-//   solution([
-//     ["ICN", "A"],
-//     ["ICN", "B"],
-//     ["B", "ICN"],
 //   ])
 // );
 console.log(
   solution([
     ["ICN", "A"],
-    ["A", "B"],
-    ["B", "C"],
+    ["ICN", "B"],
+    ["B", "ICN"],
   ])
 );
+// console.log(
+//   solution([
+//     ["ICN", "A"],
+//     ["A", "B"],
+//     ["B", "C"],
+//   ])
+// );

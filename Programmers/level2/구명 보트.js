@@ -1,17 +1,20 @@
 function solution(people, limit) {
   var answer = 0;
-  people.sort((a, b) => b - a);
-  let boat = people[0];
-  let restPeople = people.slice(1);
-  while (restPeople.length) {
-    for (let i = 0; i < restPeople.length; i++) {
-      if (boat[0] + restPeople[i] <= limit) {
-        answer += 1;
-        break;
-      }
+  people.sort((a, b) => a - b);
+  let start = 0;
+  let end = people.length - 1;
+  while (start <= end) {
+    console.log(start, end, answer);
+    if (people[start] + people[end] <= limit) {
+      answer++;
+      start++;
+      end--;
+    } else {
+      answer++;
+      end--;
     }
   }
-  return answer + 1;
+  return answer;
 }
 
-console.log(solution([30, 40, 50, 60], 100));
+console.log(solution([70, 50, 80, 50], 100));

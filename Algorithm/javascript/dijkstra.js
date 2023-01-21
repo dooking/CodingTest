@@ -1,16 +1,15 @@
-function dijkstra(graph) {
-  const queue = [];
-  const distance = new Array(n + 1).fill(Infinity);
-
-  queue.push([x, 0]);
-  distance[x] = 0;
-  while (queue.length > 0) {
-    const [start, cost] = queue.shift();
-    for (let i = 0; i < graph[start].length; i++) {
-      const [v, c] = graph[start][i];
-      if (distance[v] > cost + c) {
-        distance[v] = cost + c;
-        queue.push([v, distance[v]]);
+function dijkstra(start, n, adj) {
+  const queue = [[start, 0]];
+  const visited = [];
+  const distance = Array(n + 1).fill(Infinity);
+  distance[start] = 0;
+  while (queue.length) {
+    const [cur, weigth] = queue.shift();
+    visited[cur] = true;
+    for (let [next, nextWeigth] of adj[cur]) {
+      if (distance[next] > distance[cur] + nextWeigth) {
+        distance[next] = distance[cur] + nextWeigth;
+        queue.push([next, nextWeigth]);
       }
     }
   }

@@ -44,6 +44,29 @@ const permutation = (arr, n) => {
   return result;
 };
 
+// 3-1 Another Permutaion
+function permutation(arr, n) {
+  const result = [];
+  const visited = Array.from({ length: arr.length }).fill(false);
+  function dfs(v) {
+    if (v.length === n) {
+      result.push(v.slice());
+      return;
+    }
+    arr.forEach((el) => {
+      if (!visited[el]) {
+        v.push(el);
+        visited[el] = true;
+        dfs(v);
+        visited[el] = false;
+        v.pop();
+      }
+    });
+  }
+  dfs([]);
+  return result;
+}
+
 // 4. permutation with repetition
 
 const permutationWithRepetition = (arr, n) => {
