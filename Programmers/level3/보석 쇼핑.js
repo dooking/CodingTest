@@ -1,34 +1,39 @@
 function solution(gems) {
   var answer = [];
-  const shops = {};
-  let idx = 1;
+  const jewerlys = {};
+  let tempJewerly = {};
+  let jewerlyCount = 0;
   for (let gem of gems) {
-    if (!shops[gem]) {
-      shops[gem] = {
-        jewerly: [idx],
-        minIdx: idx,
-        maxIdx: idx,
-      };
+    if (jewerlys[gem]) {
+      jewerlys[gem] += 1;
     } else {
-      shops[gem].jewerly.push(idx);
-      shops[gem].maxIdx = idx;
+      jewerlys[gem] = 1;
+      tempJewerly[gem] = 0;
+      jewerlyCount++;
     }
-    idx++;
   }
-  let start = 0;
-  let end = 0;
-  for (let i = start; i < gems.length; i++) {
-    while (end <= gems.length) {
-      console.log(end);
+  let end = -1;
+  let sumTemp = 0;
+  for (let start = 0; start < gems.length; start++) {
+    while (end < gems.length - 1 && sumTemp < jewerlyCount) {
       end++;
+      tempJewerly[gems[end]]++;
+      if (tempJewerly[gems[end]] === 1) {
+        sumTemp++;
+      }
     }
-    end = i;
-    console.log(i, end);
+    if (sumTemp === jewerlyCount) {
+      answer.push([start, end, end - start]);
+    }
+    tempJewerly[gems[start]]--;
+    if (tempJewerly[gems[start]] === 0) {
+      sumTemp--;
+    }
   }
-  console.log(shops);
-  return answer;
+  answer.sort((a, b) => a[2] - b[2]);
+  return [answer[0][0] + 1, answer[0][1] + 1];
 }
 
 console.log(
-  solution(["DIA", "RUBY", "RUBY", "EMERALD", "SAPPHIRE", "DIA", "DIA", "DIA"])
+  solution(["DIA", "RUBY", "RUBY", "DIA", "DIA", "EMERALD", "SAPPHIRE", "DIA"])
 );
