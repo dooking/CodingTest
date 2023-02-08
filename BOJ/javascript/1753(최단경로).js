@@ -88,7 +88,6 @@ function solution(N, M, start, edges) {
       }
     }
   }
-
   return answer.map((el) => (el == Infinity ? "INF" : el)).join("\n");
 }
 console.log(solution(N, M, start, edges));

@@ -13,6 +13,30 @@ const combination = (arr, n) => {
   return result;
 };
 
+// 1-1. Other Combination
+function solution(N, M) {
+  let answer = [];
+  const arr = Array.from({ length: N }, (_, idx) => idx + 1);
+  const visited = Array.from({ length: N }).fill(false);
+  function dfs(n, idx, _arr) {
+    if (n === M) {
+      answer.push(_arr.slice());
+      return;
+    }
+    for (let i = idx; i < N; i++) {
+      const el = arr[i];
+      if (!visited[i]) {
+        visited[i] = true;
+        _arr.push(el);
+        dfs(n + 1, i, _arr);
+        visited[i] = false;
+        _arr.pop();
+      }
+    }
+  }
+  dfs(0, 0, []);
+}
+
 // 2. combination with repetition
 const combinationWithRepetition = (arr, n) => {
   const result = [];
